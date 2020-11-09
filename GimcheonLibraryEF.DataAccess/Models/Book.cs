@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace GimcheonLibraryEF.DataAccess.Models
 {
@@ -15,6 +10,7 @@ namespace GimcheonLibraryEF.DataAccess.Models
         [Required]
         public string Title { get; set; }
 
+        [Display(Name = "Author")]
         public int AuthorId { get; set; }
         public Author Author { get; set; }
 
