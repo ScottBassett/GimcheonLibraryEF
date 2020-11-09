@@ -19,35 +19,30 @@
                 @Html.DisplayNameFor(book => book.Author)
             </th>
             <th>
-                @Html.DisplayNameFor(book => book.TotalCopies)
-            </th>
-            <th>
                 @Html.DisplayNameFor(book => book.AvailableCopies)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var book in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(books => book.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(books => book.Author.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(books => book.TotalCopies)
-            </td>
-            <td>
-                @Html.DisplayFor(books => book.AvailableCopies)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@book.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@book.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@book.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@book.Id">@Html.DisplayFor(books => book.Title)</a>
+                </td>
+                <td>
+                    <a asp-controller="Authors" asp-action="Details" asp-route-id="@book.AuthorId">@Html.DisplayFor(books => book.Author.Name)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(books => book.AvailableCopies)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@book.Id">Edit</a> |
+                    @*<a asp-action="Details" asp-route-id="@book.Id">Details</a> |*@
+                    <a asp-action="Delete" asp-route-id="@book.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
