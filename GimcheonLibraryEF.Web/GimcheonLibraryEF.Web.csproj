@@ -11,4 +11,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GimcheonLibraryEF.DataAccess\GimcheonLibraryEF.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
