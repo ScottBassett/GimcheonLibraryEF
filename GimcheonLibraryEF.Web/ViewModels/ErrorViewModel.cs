@@ -1,6 +1,6 @@
 using System;
 
-namespace GimcheonLibraryEF.Web.Models
+namespace GimcheonLibraryEF.Web.ViewModels
 {
     public class ErrorViewModel
     {

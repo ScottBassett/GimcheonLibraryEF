@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
@@ -18,10 +20,18 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var gimcheonLibraryDbContext = _context.Books.Include(b => b.Author);
-            return View(await gimcheonLibraryDbContext.ToListAsync());
+           // var gimcheonLibraryDbContext = _context.Books.Include(b => b.Author);
+
+           var books = from b in _context.Books.Include(b => b.Author) select b;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                books = books.Where(s => s.Title.Contains(searchString));
+            }
+
+            return View(await books.ToListAsync());
         }
 
         // GET: Books/Details/5

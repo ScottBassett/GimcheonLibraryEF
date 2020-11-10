@@ -5,7 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using GimcheonLibraryEF.Web.Models;
+using GimcheonLibraryEF.Web.ViewModels;
+using GimcheonLibraryEF.Web.ViewModels;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
