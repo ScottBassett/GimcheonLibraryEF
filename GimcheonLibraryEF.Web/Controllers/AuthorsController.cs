@@ -26,19 +26,16 @@ namespace GimcheonLibraryEF.Web.Controllers
         // GET: Authors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var author = await _context.Authors
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (author == null)
+            var authorDetailsViewModel = new AuthorDetailsViewModel
             {
-                return NotFound();
-            }
+                Author = await _context.Authors.FirstOrDefaultAsync(m => m.Id == id),
+                Books = _context.Books.Include(b => b.Author)
+                    .Where(a => a.AuthorId == id).Select(b => b)
+            };
 
-            return View(author);
+            return View(authorDetailsViewModel);
         }
 
         // GET: Authors/Create
@@ -48,8 +45,6 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // POST: Authors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,About")] Author author)
@@ -66,30 +61,21 @@ namespace GimcheonLibraryEF.Web.Controllers
         // GET: Authors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var author = await _context.Authors.FindAsync(id);
-            if (author == null)
-            {
-                return NotFound();
-            }
+
+            if (author == null) return NotFound();
+
             return View(author);
         }
 
         // POST: Authors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,About")] Author author)
         {
-            if (id != author.Id)
-            {
-                return NotFound();
-            }
+            if (id != author.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -117,17 +103,12 @@ namespace GimcheonLibraryEF.Web.Controllers
         // GET: Authors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var author = await _context.Authors
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (author == null)
-            {
-                return NotFound();
-            }
+
+            if (author == null) return NotFound();
 
             return View(author);
         }
@@ -138,8 +119,11 @@ namespace GimcheonLibraryEF.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var author = await _context.Authors.FindAsync(id);
+
             _context.Authors.Remove(author);
+
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

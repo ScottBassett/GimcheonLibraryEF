@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
@@ -22,11 +20,9 @@ namespace GimcheonLibraryEF.Web.Controllers
         // GET: Books
         public async Task<IActionResult> Index(string searchString)
         {
-           // var gimcheonLibraryDbContext = _context.Books.Include(b => b.Author);
-
            var books = from b in _context.Books.Include(b => b.Author) select b;
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 books = books.Where(s => s.Title.Contains(searchString));
             }
@@ -61,8 +57,6 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,AuthorId,Description,TotalCopies,AvailableCopies,ImageUrl")] Book book)
@@ -86,17 +80,14 @@ namespace GimcheonLibraryEF.Web.Controllers
             }
 
             var book = await _context.Books.FindAsync(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
+
+            if (book == null) return NotFound();
+
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", book.AuthorId);
             return View(book);
         }
 
         // POST: Books/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,AuthorId,Description,TotalCopies,AvailableCopies,ImageUrl")] Book book)
@@ -133,18 +124,13 @@ namespace GimcheonLibraryEF.Web.Controllers
         // GET: Books/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var book = await _context.Books
                 .Include(b => b.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (book == null)
-            {
-                return NotFound();
-            }
+
+            if (book == null) return NotFound();
 
             return View(book);
         }
@@ -155,8 +141,11 @@ namespace GimcheonLibraryEF.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var book = await _context.Books.FindAsync(id);
+
             _context.Books.Remove(book);
+
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
