@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿//using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace GimcheonLibraryEF.DataAccess.Models
-{
-    public class AppUser : IdentityUser
-    {
+//namespace GimcheonLibraryEF.DataAccess.Models
+//{
+//    public class AppUser : IdentityUser
+//    {
         
-    }
-}
+//    }
+//}
