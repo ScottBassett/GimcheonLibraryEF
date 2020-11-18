@@ -26,7 +26,11 @@ namespace GimcheonLibraryEF.Web
                 options.UseNpgsql(
                     _config.GetConnectionString("PostgresConnection")));
 
-           services.AddIdentity<IdentityUser, IdentityRole>()
+           services.AddIdentity<IdentityUser, IdentityRole>(options =>
+               {
+                   options.Password.RequiredLength = 5;
+                   options.Password.RequiredUniqueChars = 3;
+               })
                .AddEntityFrameworkStores<GimcheonLibraryDbContext>();
         }
 
