@@ -26,7 +26,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            return View(await _context.LibraryUsers.ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -34,7 +34,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         {
             if (id == null) return NotFound();
 
-            var user = await _context.Users
+            var user = await _context.LibraryUsers
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (user == null) return NotFound();
@@ -92,7 +92,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         {
             if (id == null) return NotFound();
 
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.LibraryUsers.FindAsync(id);
 
             if (user == null) return NotFound();
 
@@ -134,7 +134,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         {
             if (id == null) return NotFound();
 
-            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
+            var user = await _context.LibraryUsers.FirstOrDefaultAsync(m => m.Id == id);
             
             if (user == null) return NotFound();
 
@@ -146,15 +146,15 @@ namespace GimcheonLibraryEF.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            _context.Users.Remove(user);
+            var user = await _context.LibraryUsers.FindAsync(id);
+            _context.LibraryUsers.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UserExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.LibraryUsers.Any(e => e.Id == id);
         }
     }
 }

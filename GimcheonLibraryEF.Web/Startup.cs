@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using GimcheonLibraryEF.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +25,9 @@ namespace GimcheonLibraryEF.Web
             services.AddDbContext<GimcheonLibraryDbContext>(options =>
                 options.UseNpgsql(
                     _config.GetConnectionString("PostgresConnection")));
+
+           services.AddIdentity<IdentityUser, IdentityRole>()
+               .AddEntityFrameworkStores<GimcheonLibraryDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,9 +48,8 @@ namespace GimcheonLibraryEF.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
