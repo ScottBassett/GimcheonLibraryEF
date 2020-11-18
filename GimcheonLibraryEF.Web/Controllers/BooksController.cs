@@ -65,7 +65,7 @@ namespace GimcheonLibraryEF.Web.Controllers
             {
                 _context.Add(book);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = book.Id });
             }
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", book.AuthorId);
             return View(book);
@@ -115,7 +115,7 @@ namespace GimcheonLibraryEF.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = book.Id });
             }
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", book.AuthorId);
             return View(book);

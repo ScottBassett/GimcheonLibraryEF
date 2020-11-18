@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
-namespace GimcheonLibraryEF.DataAccess.Models
+namespace GimcheonLibraryEF.Web.ViewModels
 {
-    public class User
+    public class UserCreateViewModel
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(50, ErrorMessage = "Name cannot exceed 50 characters")]
         public string FirstName { get; set; }
@@ -18,6 +16,6 @@ namespace GimcheonLibraryEF.DataAccess.Models
         [Required]
         public string Email { get; set; }
 
-        public string PhotoPath { get; set; }
+        public IFormFile Photo { get; set; }
     }
 }
