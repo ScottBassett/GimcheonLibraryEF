@@ -8,10 +8,12 @@ namespace GimcheonLibraryEF.DataAccess.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "First Name")]
         [MaxLength(50, ErrorMessage = "Name cannot exceed 50 characters")]
         public string FirstName { get; set; }
 
         [Required]
+        [Display(Name = "Last Name")]
         [MaxLength(50, ErrorMessage = "Name cannot exceed 50 characters")]
         public string LastName { get; set; }
 
