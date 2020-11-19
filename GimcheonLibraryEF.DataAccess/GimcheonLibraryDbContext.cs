@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GimcheonLibraryEF.DataAccess
 {
-    public class GimcheonLibraryDbContext : IdentityDbContext
+    public class GimcheonLibraryDbContext : IdentityDbContext<ApplicationUser>
     {
         public GimcheonLibraryDbContext(DbContextOptions<GimcheonLibraryDbContext> options)
             : base(options)

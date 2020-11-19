@@ -1,4 +1,5 @@
 using GimcheonLibraryEF.DataAccess;
+using GimcheonLibraryEF.DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,7 +36,7 @@ namespace GimcheonLibraryEF.Web
                 options.UseNpgsql(
                     _config.GetConnectionString("PostgresConnection")));
 
-           services.AddIdentity<IdentityUser, IdentityRole>(options =>
+           services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                {
                    options.Password.RequiredLength = 5;
                    options.Password.RequiredUniqueChars = 3;
