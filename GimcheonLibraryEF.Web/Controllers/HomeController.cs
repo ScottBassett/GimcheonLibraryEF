@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using GimcheonLibraryEF.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -15,11 +17,6 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
         {
             return View();
         }

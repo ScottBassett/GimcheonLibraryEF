@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
 using GimcheonLibraryEF.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
@@ -18,12 +19,14 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // GET: Authors
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Authors.ToListAsync());
         }
 
         // GET: Authors/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();

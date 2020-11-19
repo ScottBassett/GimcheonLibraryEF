@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
@@ -18,6 +19,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // GET: Books
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string searchString)
         {
            var books = from b in _context.Books.Include(b => b.Author) select b;
@@ -31,6 +33,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // GET: Books/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

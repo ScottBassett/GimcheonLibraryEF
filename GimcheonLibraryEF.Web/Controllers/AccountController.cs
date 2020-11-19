@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GimcheonLibraryEF.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace GimcheonLibraryEF.Web.Controllers
@@ -25,12 +26,14 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -45,7 +48,7 @@ namespace GimcheonLibraryEF.Web.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                   return RedirectToAction("Index", "Home");
+                   return RedirectToAction("Index", "Books");
                 }
 
                 foreach (var error in result.Errors)
@@ -57,18 +60,16 @@ namespace GimcheonLibraryEF.Web.Controllers
             return View(model);
         }
 
-
-
-
-
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +79,16 @@ namespace GimcheonLibraryEF.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                   return RedirectToAction("Index", "Home");
+                    // Check if it is a local url to prevent redirect vulnerability
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                         
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Books");
+                    }
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
