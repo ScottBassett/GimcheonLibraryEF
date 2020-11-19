@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using GimcheonLibraryEF.Web.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GimcheonLibraryEF.Web.ViewModels
@@ -8,6 +9,7 @@ namespace GimcheonLibraryEF.Web.ViewModels
         [Required]
         [EmailAddress]
         [Remote(action:"IsEmailInUse", controller:"Account")]
+        [ValidEmailDomain(allowedDomain: "gimcheon.com", ErrorMessage = "Email domain must be gimcheon.com")]
         public string Email { get; set; }
 
         [Required]
