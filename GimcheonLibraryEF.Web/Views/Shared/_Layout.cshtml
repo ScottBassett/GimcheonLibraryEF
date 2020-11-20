@@ -21,17 +21,17 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Authors" asp-action="Index">Authors</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Books" asp-action="Index">Books</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Users" asp-action="Index">Users</a>
+                            <a class="nav-link text-dark" asp-controller="Authors" asp-action="Index">Authors</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Administration" asp-action="ListRoles">Roles</a>
-                        </li>
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Administration" asp-action="ListRoles">Manage Roles</a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <ul class="navbar-nav flex-grow-1 ml-auto">

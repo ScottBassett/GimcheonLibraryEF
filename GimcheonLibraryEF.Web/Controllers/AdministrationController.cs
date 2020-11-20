@@ -2,12 +2,14 @@
 using System.Threading.Tasks;
 using GimcheonLibraryEF.DataAccess.Models;
 using GimcheonLibraryEF.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
