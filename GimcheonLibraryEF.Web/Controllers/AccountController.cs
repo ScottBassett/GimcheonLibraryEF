@@ -58,8 +58,13 @@ namespace GimcheonLibraryEF.Web.Controllers
 
                 if (result.Succeeded)
                 {
+                    if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("ListUsers", "Administration");
+                    }
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                   return RedirectToAction("Index", "Books");
+                    return RedirectToAction("Index", "Books");
                 }
 
                 foreach (var error in result.Errors)
@@ -93,7 +98,7 @@ namespace GimcheonLibraryEF.Web.Controllers
                     // Check if it is a local url to prevent redirect vulnerability
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     {
-                         
+
                         return Redirect(returnUrl);
                     }
                     else
