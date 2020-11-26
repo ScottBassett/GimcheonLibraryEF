@@ -32,6 +32,13 @@ namespace GimcheonLibraryEF.Web
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy",
+                    policy => policy.RequireClaim("Delete Role")
+                                                 .RequireClaim("Create Role"));
+            });
+
             services.AddDbContext<GimcheonLibraryDbContext>(options =>
                 options.UseNpgsql(
                     _config.GetConnectionString("PostgresConnection")));
