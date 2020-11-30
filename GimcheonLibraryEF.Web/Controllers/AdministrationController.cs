@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Policy = "AdminRolePolicy")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -124,6 +124,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
             ViewBag.userId = userId;
@@ -162,6 +163,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -304,7 +306,6 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
@@ -333,7 +334,6 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await _roleManager.FindByIdAsync(model.Id);

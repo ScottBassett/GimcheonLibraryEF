@@ -1,5 +1,6 @@
 using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
+using GimcheonLibraryEF.Web.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,7 +45,7 @@ namespace GimcheonLibraryEF.Web
                     policy => policy.RequireClaim("Delete Role"));
 
                 options.AddPolicy("EditRolePolicy",
-                    policy => policy.RequireClaim("Edit Role", "true"));
+                    policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
 
                 options.AddPolicy("AdminRolePolicy",
                     policy => policy.RequireRole("Admin"));
@@ -60,6 +61,8 @@ namespace GimcheonLibraryEF.Web
                    options.Password.RequiredUniqueChars = 3;
                })
                .AddEntityFrameworkStores<GimcheonLibraryDbContext>();
+
+           services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
