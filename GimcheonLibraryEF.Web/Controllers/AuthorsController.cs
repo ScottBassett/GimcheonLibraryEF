@@ -42,6 +42,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // GET: Authors/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -50,6 +51,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         // POST: Authors/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,Name,About")] Author author)
         {
             if (ModelState.IsValid)
@@ -62,6 +64,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // GET: Authors/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -76,6 +79,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         // POST: Authors/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,About")] Author author)
         {
             if (id != author.Id) return NotFound();
@@ -104,6 +108,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // GET: Authors/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -119,6 +124,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         // POST: Authors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var author = await _context.Authors.FindAsync(id);

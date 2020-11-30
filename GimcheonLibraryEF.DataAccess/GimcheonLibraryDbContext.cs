@@ -2,6 +2,7 @@
 using GimcheonLibraryEF.DataAccess.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace GimcheonLibraryEF.DataAccess
 {
@@ -13,7 +14,7 @@ namespace GimcheonLibraryEF.DataAccess
 
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<User> LibraryUsers { get; set; }
+        public DbSet<BorrowedBooks> BorrowedBooks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -24,6 +25,9 @@ namespace GimcheonLibraryEF.DataAccess
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            //builder.Entity<ApplicationUser>()
+            //    .HasMany<Books>(u => u.)
         }
     }
 }

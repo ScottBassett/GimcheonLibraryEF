@@ -6,14 +6,17 @@
 
 <h1>Books</h1>
 
-<p>
-    <a asp-action="Create">Add Book</a>
-</p>
+@if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Add Book</a>
+    </p>
+}
 
 <form asp-controller="Books" asp-action="Index" method="get">
     <p>
-        Title: <input type="text" name="SearchString"/>
-        <input type="submit" value="Search"/>
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Search" />
     </p>
 </form>
 
@@ -45,11 +48,24 @@
                 <td>
                     @Html.DisplayFor(books => book.AvailableCopies)
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@book.Id">Edit</a> |
-                    @*<a asp-action="Details" asp-route-id="@book.Id">Details</a> |*@
-                    <a asp-action="Delete" asp-route-id="@book.Id">Delete</a>
-                </td>
+
+                @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@book.Id">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@book.Id">Delete</a>
+                    </td>
+                }
+
+                @if (signInManager.IsSignedIn(User) && User.IsInRole("User"))
+                {
+                    <td>
+                        <a class="btn btn-primary"
+                           asp-controller="" asp-action="" asp-route-id="">
+                            Borrow Book
+                        </a>
+                    </td>
+                }
             </tr>
         }
     </tbody>
