@@ -7,23 +7,50 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
     public class BorrowedBooksController : Controller
     {
         private readonly GimcheonLibraryDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public BorrowedBooksController(GimcheonLibraryDbContext context)
+        public BorrowedBooksController(GimcheonLibraryDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: BorrowedBooks
         public async Task<IActionResult> Index()
         {
-            var gimcheonLibraryDbContext = _context.BorrowedBooks.Include(b => b.ApplicationUser).Include(b => b.Book);
-            return View(await gimcheonLibraryDbContext.ToListAsync());
+
+
+            var booksQuery = _context.BorrowedBooks
+                .Include(b => b.ApplicationUser)
+                .Include(b => b.Book);
+
+            return View(await booksQuery.ToListAsync());
+        }
+
+        // GET: MyBooks/5
+        public async Task<IActionResult> MyBooks(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
+                return View("NotFound");
+            }
+
+            var booksQuery = _context.BorrowedBooks
+                .Include(b => b.ApplicationUser)
+                .Include(b => b.Book)
+                .Where(b => b.UserId == user.Id);
+
+            return View(await booksQuery.ToListAsync());
         }
 
         // GET: BorrowedBooks/Details/5

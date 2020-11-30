@@ -1,4 +1,5 @@
 ﻿@inject SignInManager<ApplicationUser> signInManager;
+@*@inject ApplicationUser user;*@
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +45,8 @@
                         @if (signInManager.IsSignedIn(User) && User.IsInRole("User"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Books" asp-action="Index">My Books</a>
+                                <a class="nav-link text-dark" asp-controller="BorrowedBooks" asp-action="MyBooks" 
+                                   asp-route-id="">My Books</a>
                             </li>
                         }
                     </ul>
