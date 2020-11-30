@@ -26,8 +26,18 @@ namespace GimcheonLibraryEF.DataAccess
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            //builder.Entity<ApplicationUser>()
-            //    .HasMany<Books>(u => u.)
+            builder.Entity<BorrowedBooks>()
+                .HasKey(bb => bb.Id);
+
+            builder.Entity<BorrowedBooks>()
+                .HasOne(bb => bb.Book)
+                .WithMany(b => b.BorrowedBooks)
+                .HasForeignKey(bb => bb.BookId);
+
+            builder.Entity<BorrowedBooks>()
+                .HasOne(bb => bb.ApplicationUser)
+                .WithMany(c => c.BorrowedBooks)
+                .HasForeignKey(bb => bb.UserId);
         }
     }
 }

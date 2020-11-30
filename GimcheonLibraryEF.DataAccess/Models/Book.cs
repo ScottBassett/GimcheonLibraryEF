@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace GimcheonLibraryEF.DataAccess.Models
 {
@@ -25,5 +26,7 @@ namespace GimcheonLibraryEF.DataAccess.Models
         public int AvailableCopies { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public virtual List<BorrowedBooks> BorrowedBooks { get; set; }
     }
 }
