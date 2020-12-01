@@ -4,17 +4,14 @@
     ViewData["Title"] = "My Books";
 }
 
-<h1>Index</h1>
+<h1>My Books</h1>
 
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
+</p>*@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationUser)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Book)
             </th>
@@ -25,15 +22,18 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Book.Title)
             </td>
-            <td>
+            @*<td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>*@
+            <td>
+                <a class="btn btn-primary"
+                   asp-controller="" asp-action="" asp-route-id="">
+                    Return Book
+                </a>
             </td>
         </tr>
 }

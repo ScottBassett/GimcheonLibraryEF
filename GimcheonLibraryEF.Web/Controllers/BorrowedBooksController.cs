@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
+using GimcheonLibraryEF.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace GimcheonLibraryEF.Web.Controllers
@@ -51,6 +52,16 @@ namespace GimcheonLibraryEF.Web.Controllers
                 .Where(b => b.UserId == user.Id);
 
             return View(await booksQuery.ToListAsync());
+
+            //if (id == null) return NotFound();
+
+            //var borrowedBooksMyBooksViewModel = new BorrowedBooksMyBooksViewModel
+            //{
+            //    BorrowedBooks = await _context.BorrowedBooks.,
+            //    User = _context.BorrowedBooks..FirstOrDefaultAsync(u => u.UserId == id)
+            //};
+
+            //return View(authorDetailsViewModel);
         }
 
         // GET: BorrowedBooks/Details/5
