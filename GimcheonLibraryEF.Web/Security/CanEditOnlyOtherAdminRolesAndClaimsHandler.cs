@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace GimcheonLibraryEF.Web.Security
 {
@@ -20,8 +19,6 @@ namespace GimcheonLibraryEF.Web.Security
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
             ManageAdminRolesAndClaimsRequirement requirement)
         {
-
-
             var authFilterContext = _httpContextAccessor.HttpContext;
             if (authFilterContext == null)
             {

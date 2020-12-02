@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authentication;
 
 namespace GimcheonLibraryEF.Web.ViewModels
 {
@@ -14,5 +16,8 @@ namespace GimcheonLibraryEF.Web.ViewModels
 
         [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }
+
+        public string ReturnUrl { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }
     }
 }
