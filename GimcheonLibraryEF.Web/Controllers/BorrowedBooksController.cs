@@ -170,12 +170,25 @@ namespace GimcheonLibraryEF.Web.Controllers
 
         public async Task<IActionResult> CheckBookOut(ApplicationUser user, Book book)
         {
-           // var user = await _userManager.GetUserAsync(HttpContext.User);
+            // var user = await _userManager.GetUserAsync(HttpContext.User);
 
-           Boo
+            if (user == null) return View("NotFound");
+            if (book == null) return View("NotFound");
+
+            BorrowedBook borrowedBook = new BorrowedBook
+           {
+               ApplicationUser = user,
+               Book = book
+           };
+
+            var bookAvailableCopies = borrowedBook.Book.AvailableCopies - 1;
+            if (bookAvailableCopies < 1)
+            {
+                // Book not in stock
+            }
 
 
-            return View(await booksQuery);
+            return View(borrowedBook);
         }
     }
 }
