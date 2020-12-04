@@ -39,6 +39,11 @@ namespace GimcheonLibraryEF.Web
                 {
                     options.ClientId = "145350645045-n0miv3hq065qehlodd8reh7evgk9u8ri.apps.googleusercontent.com";
                     options.ClientSecret = "2A2XClaY8Ix2OygXM-Lezk90";
+                })
+                .AddFacebook(options =>
+                {
+                    options.AppId = "428047571552996";
+                    options.AppSecret = "5b5632b056329491e77934989556b8f7";
                 });
 
             services.ConfigureApplicationCookie(options =>
