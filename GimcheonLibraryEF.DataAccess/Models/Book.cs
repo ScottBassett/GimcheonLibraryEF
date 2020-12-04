@@ -27,6 +27,6 @@ namespace GimcheonLibraryEF.DataAccess.Models
 
         public string ImageUrl { get; set; }
 
-        public virtual List<BorrowedBooks> BorrowedBooks { get; set; }
+        public virtual List<BorrowedBook> BorrowedBooks { get; set; }
     }
 }

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
-using GimcheonLibraryEF.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace GimcheonLibraryEF.Web.Controllers
@@ -24,44 +21,18 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // GET: BorrowedBooks
+        [Route("/MyBooks")]
         public async Task<IActionResult> Index()
         {
-
-
-            var booksQuery = _context.BorrowedBooks
-                .Include(b => b.ApplicationUser)
-                .Include(b => b.Book);
-
-            return View(await booksQuery.ToListAsync());
-        }
-
-        // GET: MyBooks/5
-        public async Task<IActionResult> MyBooks(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user == null)
-            {
-                ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
-                return View("NotFound");
-            }
+            var user = await _userManager.GetUserAsync(HttpContext.User);
 
             var booksQuery = _context.BorrowedBooks
                 .Include(b => b.ApplicationUser)
                 .Include(b => b.Book)
-                .Where(b => b.UserId == user.Id);
+                .Where(b => b.UserId == user.Id)
+                .ToListAsync();
 
-            return View(await booksQuery.ToListAsync());
-
-            //if (id == null) return NotFound();
-
-            //var borrowedBooksMyBooksViewModel = new BorrowedBooksMyBooksViewModel
-            //{
-            //    BorrowedBooks = await _context.BorrowedBooks.,
-            //    User = _context.BorrowedBooks..FirstOrDefaultAsync(u => u.UserId == id)
-            //};
-
-            //return View(authorDetailsViewModel);
+            return View(await booksQuery);
         }
 
         // GET: BorrowedBooks/Details/5
@@ -93,11 +64,9 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // POST: BorrowedBooks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,BookId")] BorrowedBooks borrowedBooks)
+        public async Task<IActionResult> Create([Bind("Id,UserId,BookId")] BorrowedBook borrowedBooks)
         {
             if (ModelState.IsValid)
             {
@@ -129,11 +98,9 @@ namespace GimcheonLibraryEF.Web.Controllers
         }
 
         // POST: BorrowedBooks/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,BookId")] BorrowedBooks borrowedBooks)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,BookId")] BorrowedBook borrowedBooks)
         {
             if (id != borrowedBooks.Id)
             {
@@ -199,6 +166,16 @@ namespace GimcheonLibraryEF.Web.Controllers
         private bool BorrowedBooksExists(int id)
         {
             return _context.BorrowedBooks.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> CheckBookOut(ApplicationUser user, Book book)
+        {
+           // var user = await _userManager.GetUserAsync(HttpContext.User);
+
+           Boo
+
+
+            return View(await booksQuery);
         }
     }
 }

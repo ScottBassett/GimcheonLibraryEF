@@ -10,6 +10,6 @@ namespace GimcheonLibraryEF.Web.ViewModels
     public class BorrowedBooksMyBooksViewModel
     {
         public ApplicationUser User { get; set; }
-        public BorrowedBooks BorrowedBooks { get; set; }
+        public BorrowedBook BorrowedBooks { get; set; }
     }
 }
