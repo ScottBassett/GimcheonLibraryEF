@@ -6,6 +6,6 @@ namespace GimcheonLibraryEF.DataAccess.Models
     public class ApplicationUser : IdentityUser
     {
         public string City { get; set; }
-        public virtual List<BorrowedBook> BorrowedBooks { get; set; }
+        public virtual List<BorrowedBooks> BorrowedBooks { get; set; }
     }
 }

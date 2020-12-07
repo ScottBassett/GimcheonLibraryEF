@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
@@ -13,22 +14,26 @@ namespace GimcheonLibraryEF.Web.Controllers
     public class BooksController : Controller
     {
         private readonly GimcheonLibraryDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public BooksController(GimcheonLibraryDbContext context)
+        public BooksController(GimcheonLibraryDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Books
         [AllowAnonymous]
         public async Task<IActionResult> Index(string searchString)
         {
-           var books = from b in _context.Books.Include(b => b.Author) select b;
+           var books = _context.Books.Include(b => b.Author).Select(b => b);
 
             if (!string.IsNullOrEmpty(searchString))
             {
                 books = books.Where(s => s.Title.Contains(searchString));
             }
+
+            books = books.OrderBy(x => x.Title);
 
             return View(await books.ToListAsync());
         }
@@ -163,6 +168,35 @@ namespace GimcheonLibraryEF.Web.Controllers
         private bool BookExists(int id)
         {
             return _context.Books.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> CheckBookOut(int id)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null) return NotFound();
+            if (id == 0) return NotFound();
+
+            var book = await _context.Books.SingleOrDefaultAsync(b => b.Id == id);
+            if (book == null) return NotFound();
+
+            if (book.AvailableCopies < 1)
+            {
+                // Book not in stock
+                return RedirectToAction(nameof(Index));
+            }
+
+            var borrowedBook = new BorrowedBooks
+            {
+                UserId = user.Id,
+                BookId = id
+            };
+            
+            book.AvailableCopies--;
+
+            await _context.BorrowedBooks.AddAsync(borrowedBook);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -26,13 +26,13 @@ namespace GimcheonLibraryEF.Web.Controllers
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
-            var booksQuery = _context.BorrowedBooks
+            var books = _context.BorrowedBooks
                 .Include(b => b.ApplicationUser)
                 .Include(b => b.Book)
                 .Where(b => b.UserId == user.Id)
                 .ToListAsync();
 
-            return View(await booksQuery);
+            return View(await books);
         }
 
         // GET: BorrowedBooks/Details/5
@@ -66,7 +66,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         // POST: BorrowedBooks/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,BookId")] BorrowedBook borrowedBooks)
+        public async Task<IActionResult> Create([Bind("Id,UserId,BookId")] BorrowedBooks borrowedBooks)
         {
             if (ModelState.IsValid)
             {
@@ -100,7 +100,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         // POST: BorrowedBooks/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,BookId")] BorrowedBook borrowedBooks)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,BookId")] BorrowedBooks borrowedBooks)
         {
             if (id != borrowedBooks.Id)
             {
@@ -168,27 +168,25 @@ namespace GimcheonLibraryEF.Web.Controllers
             return _context.BorrowedBooks.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> CheckBookOut(ApplicationUser user, Book book)
+        public async Task<IActionResult> ReturnBook(int id)
         {
-            // var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null) return NotFound();
+            if (id == 0) return NotFound();
 
-            if (user == null) return View("NotFound");
-            if (book == null) return View("NotFound");
+            var borrowedBook = await _context.BorrowedBooks
+                .Include(b => b.Book)
+                .SingleOrDefaultAsync(b => b.Id == id);
 
-            BorrowedBook borrowedBook = new BorrowedBook
-           {
-               ApplicationUser = user,
-               Book = book
-           };
+            if (borrowedBook == null) return NotFound();
 
-            var bookAvailableCopies = borrowedBook.Book.AvailableCopies - 1;
-            if (bookAvailableCopies < 1)
-            {
-                // Book not in stock
-            }
+            borrowedBook.Book.AvailableCopies++;
 
+             _context.BorrowedBooks.Remove(borrowedBook);
+            await _context.SaveChangesAsync();
 
-            return View(borrowedBook);
+            return RedirectToAction(nameof(Index));
         }
+
     }
 }

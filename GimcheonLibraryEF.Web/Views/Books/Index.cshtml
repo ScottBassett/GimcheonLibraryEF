@@ -59,12 +59,21 @@
 
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("User"))
                 {
-                    <td>
-                        <a class="btn btn-primary"
-                           asp-controller="" asp-action="" asp-route-id="">
-                            Borrow Book
-                        </a>
-                    </td>
+                    @if (book.AvailableCopies > 0)
+                    {
+                        <td>
+                            <a class="btn btn-primary"
+                               asp-action="CheckBookOut" asp-route-id="@book.Id">
+                                Borrow Book
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <button class="btn btn-secondary" disabled>Unavailable</button>
+                        </td>
+                    }
                 }
             </tr>
         }

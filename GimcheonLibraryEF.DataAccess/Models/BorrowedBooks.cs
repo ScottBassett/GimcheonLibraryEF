@@ -2,7 +2,7 @@
 
 namespace GimcheonLibraryEF.DataAccess.Models
 {
-    public class BorrowedBook
+    public class BorrowedBooks
     {
         [Key]
         public int Id { get; set; }

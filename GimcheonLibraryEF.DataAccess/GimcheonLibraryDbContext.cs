@@ -14,7 +14,7 @@ namespace GimcheonLibraryEF.DataAccess
 
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<BorrowedBook> BorrowedBooks { get; set; }
+        public DbSet<BorrowedBooks> BorrowedBooks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -26,15 +26,15 @@ namespace GimcheonLibraryEF.DataAccess
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            builder.Entity<BorrowedBook>()
+            builder.Entity<BorrowedBooks>()
                 .HasKey(bb => bb.Id);
 
-            builder.Entity<BorrowedBook>()
+            builder.Entity<BorrowedBooks>()
                 .HasOne(bb => bb.Book)
                 .WithMany(b => b.BorrowedBooks)
                 .HasForeignKey(bb => bb.BookId);
 
-            builder.Entity<BorrowedBook>()
+            builder.Entity<BorrowedBooks>()
                 .HasOne(bb => bb.ApplicationUser)
                 .WithMany(c => c.BorrowedBooks)
                 .HasForeignKey(bb => bb.UserId);
