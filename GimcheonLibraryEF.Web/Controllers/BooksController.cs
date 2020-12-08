@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,16 +28,18 @@ namespace GimcheonLibraryEF.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(string searchString)
         {
-           var books = _context.Books.Include(b => b.Author).Select(b => b);
+           IEnumerable<Book> books = await _context.Books
+               .Include(b => b.Author)
+               .Select(b => b)
+               .OrderBy(x => x.Title)
+               .ToListAsync();
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                books = books.Where(s => s.Title.Contains(searchString));
+                books = books.Where(s => s.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase));
             }
 
-            books = books.OrderBy(x => x.Title);
-
-            return View(await books.ToListAsync());
+            return View(books);
         }
 
         // GET: Books/Details/5
