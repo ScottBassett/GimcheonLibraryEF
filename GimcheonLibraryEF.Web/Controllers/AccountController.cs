@@ -256,6 +256,18 @@ namespace GimcheonLibraryEF.Web.Controllers
                         };
 
                         await _userManager.CreateAsync(user);
+
+                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                        var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                            new { userId = user.Id, token }, Request.Scheme);
+
+                        _logger.Log(LogLevel.Warning, confirmationLink);
+
+                        ViewBag.ErrorTitle = "Registration successful";
+                        ViewBag.ErrorMessage = "Before you can log in, please confirm your email, by clicking on the " +
+                                               "confirmation link we have emailed you.";
+                        return View("Error");
                     }
 
                     await _userManager.AddLoginAsync(user, info);
