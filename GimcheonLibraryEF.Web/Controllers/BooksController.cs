@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -6,22 +7,27 @@ using Microsoft.EntityFrameworkCore;
 using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
     public class BooksController : Controller
     {
         private readonly GimcheonLibraryDbContext _context;
+        private readonly ILogger _logger;
 
-        public BooksController(GimcheonLibraryDbContext context)
+        public BooksController(GimcheonLibraryDbContext context, ILogger<BooksController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Books
         [AllowAnonymous]
         public async Task<IActionResult> Index(string searchString)
         {
+            
+
            var books = from b in _context.Books.Include(b => b.Author) select b;
 
             if (!string.IsNullOrEmpty(searchString))
@@ -36,6 +42,14 @@ namespace GimcheonLibraryEF.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
+            _logger.LogTrace("Trace Log");
+            _logger.LogDebug("Debug Log");
+            _logger.LogInformation("Info Log");
+            _logger.LogWarning("Warning Log");
+            _logger.LogError("Error Log");
+            _logger.LogCritical("Critical Log");
+
+
             if (id == null)
             {
                 return NotFound();

@@ -71,8 +71,11 @@ namespace GimcheonLibraryEF.Web
                {
                    options.Password.RequiredLength = 5;
                    options.Password.RequiredUniqueChars = 3;
+
+                   options.SignIn.RequireConfirmedEmail = true;
                })
-               .AddEntityFrameworkStores<GimcheonLibraryDbContext>();
+               .AddEntityFrameworkStores<GimcheonLibraryDbContext>()
+               .AddDefaultTokenProviders();
 
            services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
            services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
