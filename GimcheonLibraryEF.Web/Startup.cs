@@ -1,3 +1,4 @@
+using System;
 using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
 using GimcheonLibraryEF.Web.Security;
@@ -73,6 +74,9 @@ namespace GimcheonLibraryEF.Web
                    options.Password.RequiredUniqueChars = 3;
 
                    options.SignIn.RequireConfirmedEmail = true;
+
+                   options.Lockout.MaxFailedAccessAttempts = 5;
+                   options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
                })
                .AddEntityFrameworkStores<GimcheonLibraryDbContext>()
                .AddDefaultTokenProviders();

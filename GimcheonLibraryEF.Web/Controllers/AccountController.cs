@@ -154,7 +154,7 @@ namespace GimcheonLibraryEF.Web.Controllers
 
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password,
                                                                       isPersistent: model.RememberMe,
-                                                                      false);
+                                                                      true);
 
                 if (result.Succeeded)
                 {
@@ -168,6 +168,11 @@ namespace GimcheonLibraryEF.Web.Controllers
                     {
                         return RedirectToAction("Index", "Books");
                     }
+                }
+
+                if (result.IsLockedOut)
+                {
+                    return View("AccountLocked");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
@@ -342,6 +347,11 @@ namespace GimcheonLibraryEF.Web.Controllers
                     var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
                     if (result.Succeeded)
                     {
+                        if (await _userManager.IsLockedOutAsync(user))
+                        {
+                            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
+                        }
+
                         return View("ResetPasswordConfirmation");
                     }
 
@@ -354,6 +364,42 @@ namespace GimcheonLibraryEF.Web.Controllers
                 }
 
                 return View("ResetPasswordConfirmation");
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return RedirectToAction("Login");
+                }
+
+                var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+
+                    return View();
+                }
+
+                await _signInManager.RefreshSignInAsync(user);
+                return View("ChangePasswordConfirmation");
             }
 
             return View(model);
