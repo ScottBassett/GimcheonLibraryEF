@@ -24,7 +24,7 @@ namespace GimcheonLibraryEF.Web.Controllers
         [Route("/MyBooks")]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userManager.GetUserAsync(User);
 
             var books = _context.BorrowedBooks
                 .Include(b => b.ApplicationUser)

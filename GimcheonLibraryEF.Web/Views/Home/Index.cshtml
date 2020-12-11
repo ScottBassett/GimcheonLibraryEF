@@ -4,5 +4,55 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome to Gimcheon Library</h1>
-    <h2 class="display-4">Branch to loan books</h2>
+    @*<h2 class="display-4">Branch to loan books</h2>*@
+</div>
+
+<style>
+  /* Make the image fully responsive */
+    .carousel-inner img {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="container mt-3">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ul class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#myCarousel" data-slide-to="3"></li>
+                </ul>
+  
+                <!-- The slides show -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active ">
+                        <img src="~/images/books-1.jpg" alt="Woman reading a book in the forest" width="1100" height="500">
+
+                    </div>
+                    <div class="carousel-item">
+                        <img src="~/images/books-2.jpg" alt="Man reading while drinking coffee" width="1100" height="500">
+                
+                    </div>
+                    <div class="carousel-item">
+                        <img src="~/images/books-3.jpg" alt="Woman carrying books in the forest" width="1100" height="500">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="~/images/books-4.jpg" alt="Book shelve" width="1100" height="500">
+                    </div>
+                </div>
+  
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

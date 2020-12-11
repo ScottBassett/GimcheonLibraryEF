@@ -28,15 +28,16 @@ namespace GimcheonLibraryEF.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(string searchString)
         {
-           IEnumerable<Book> books = await _context.Books
-               .Include(b => b.Author)
-               .Select(b => b)
-               .OrderBy(x => x.Title)
-               .ToListAsync();
+            IEnumerable<Book> books = await _context.Books
+                .Include(b => b.Author)
+                .Select(b => b)
+                .OrderBy(x => x.Title)
+                .ToListAsync();
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                books = books.Where(s => s.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+                books = books.Where(s => s.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase)
+                                          || s.Author.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase));
             }
 
             return View(books);
@@ -194,7 +195,7 @@ namespace GimcheonLibraryEF.Web.Controllers
                 UserId = user.Id,
                 BookId = id
             };
-            
+
             book.AvailableCopies--;
 
             await _context.BorrowedBooks.AddAsync(borrowedBook);
