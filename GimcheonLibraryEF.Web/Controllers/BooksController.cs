@@ -9,6 +9,7 @@ using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
@@ -16,11 +17,13 @@ namespace GimcheonLibraryEF.Web.Controllers
     public class BooksController : Controller
     {
         private readonly GimcheonLibraryDbContext _context;
+        private readonly ILogger _logger;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public BooksController(GimcheonLibraryDbContext context, UserManager<ApplicationUser> userManager)
+        public BooksController(GimcheonLibraryDbContext context, UserManager<ApplicationUser> userManager, ILogger<BooksController> logger)
         {
             _context = context;
+            _logger = logger;
             _userManager = userManager;
         }
 
@@ -47,6 +50,14 @@ namespace GimcheonLibraryEF.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
+            _logger.LogTrace("Trace Log");
+            _logger.LogDebug("Debug Log");
+            _logger.LogInformation("Info Log");
+            _logger.LogWarning("Warning Log");
+            _logger.LogError("Error Log");
+            _logger.LogCritical("Critical Log");
+
+
             if (id == null)
             {
                 return NotFound();

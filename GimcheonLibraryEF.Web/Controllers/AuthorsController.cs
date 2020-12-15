@@ -6,16 +6,19 @@ using GimcheonLibraryEF.DataAccess;
 using GimcheonLibraryEF.DataAccess.Models;
 using GimcheonLibraryEF.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace GimcheonLibraryEF.Web.Controllers
 {
     public class AuthorsController : Controller
     {
         private readonly GimcheonLibraryDbContext _context;
+        private readonly ILogger<AuthorsController> _logger;
 
-        public AuthorsController(GimcheonLibraryDbContext context)
+        public AuthorsController(GimcheonLibraryDbContext context, ILogger<AuthorsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Authors
@@ -29,6 +32,13 @@ namespace GimcheonLibraryEF.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
+
+            _logger.LogTrace("Trace Log");
+            _logger.LogDebug("Debug Log");
+            _logger.LogInformation("Info Log");
+            _logger.LogWarning("Warning Log");
+            _logger.LogError("Error Log");
+            _logger.LogCritical("Critical Log");
             if (id == null) return NotFound();
 
             var authorDetailsViewModel = new AuthorDetailsViewModel
