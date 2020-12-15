@@ -177,7 +177,7 @@ namespace GimcheonLibraryEF.Web.Controllers
 
         public async Task<IActionResult> CheckBookOut(int id)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound();
             if (id == 0) return NotFound();
 
